@@ -1,4 +1,4 @@
-const RSVP_API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbyztosGiuGrRD4gzofMInbvVJpYEwqWWOuSapDhewCLmrPpmivNd1k8bj_2hVSwPGmoXA/exec";
 const ADMIN_PIN = "CHANGE_THIS_PIN";
 
 async function api(action, data = {}) {
