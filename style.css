@@ -1,0 +1,58 @@
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#f7f6f2;color:#101010;font-family:Montserrat,sans-serif;overflow-x:hidden}
+.screen{min-height:100svh;position:relative;display:grid;place-items:center;padding:42px 22px;overflow:hidden}
+.photo{position:absolute;inset:-7%;background-size:cover;background-position:center;transform:scale(1.03);animation:slowZoom 18s ease-in-out infinite alternate}
+.hero-photo{background-image:url(assets/hero.jpg)}
+.red-photo{background-image:url(assets/red.jpg);background-position:center top}
+.blue-photo{background-image:url(assets/blue.jpg)}
+.light{background:radial-gradient(circle at top,#fff,#f7f6f2 62%)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.18),rgba(0,0,0,.78));pointer-events:none}
+.shade.deep{background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.84));pointer-events:none}
+.center,.glass-card{position:relative;z-index:2;width:min(92vw,620px);text-align:center}
+.hero .center,.photo-section .center,.final .center{color:#fff;text-shadow:0 10px 30px rgba(0,0,0,.55)}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:500;margin:0;line-height:.95}
+h1{font-size:clamp(2.65rem,11vw,5.8rem);text-transform:uppercase;letter-spacing:.035em}
+h1 span{display:block;white-space:nowrap}
+h2{font-size:clamp(3rem,12vw,5.5rem)}
+.small{font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.82);margin:0 0 18px}
+.small.dark{color:#777}
+.line,.date,.caption{text-transform:uppercase;letter-spacing:.18em;font-size:.78rem}
+.date{display:inline-block;margin-top:18px;border:1px solid rgba(255,255,255,.55);padding:14px 18px;border-radius:999px;backdrop-filter:blur(10px)}
+.scroll{position:absolute;left:0;right:0;bottom:-110px;text-transform:uppercase;letter-spacing:.35em;font-size:.72rem;animation:bounce 1.6s infinite}
+.days{font-size:clamp(5rem,25vw,9rem)}
+.note{font-family:'Cormorant Garamond',serif;font-size:1.55rem;line-height:1.35}
+.glass-card{color:#fff;background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.28);padding:34px 24px;backdrop-filter:blur(9px);box-shadow:0 26px 60px rgba(0,0,0,.25)}
+.glass-card p{line-height:1.75}
+.tiles{display:grid;gap:13px;margin:25px 0}
+.tiles div{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);padding:18px;backdrop-filter:blur(10px)}
+.tiles span{display:block;text-transform:uppercase;letter-spacing:.25em;font-size:.65rem;color:rgba(255,255,255,.75);margin-bottom:8px}
+.tiles strong{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500}
+.button-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn,.form button{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:15px 22px;text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;text-decoration:none;cursor:pointer}
+.ghost{color:#fff;background:transparent}
+.white-card{background:rgba(255,255,255,.88);border:1px solid #ddd;padding:26px 20px;margin-top:24px;box-shadow:0 22px 55px rgba(0,0,0,.07);line-height:1.7;backdrop-filter:blur(8px)}
+.left{text-align:left}
+.form{display:grid;gap:13px;margin-top:24px}
+.form input{border:1px solid #d5d5d5;background:#fff;padding:17px;font-size:1rem}
+.form button{background:#101010;color:#fff;border-color:#101010}
+.msg{font-weight:600;min-height:24px}
+.guest-list{display:grid;gap:10px;margin:24px 0}
+.guest{background:#fff;border:1px solid #ddd;padding:13px;box-shadow:0 10px 24px rgba(0,0,0,.04)}
+.music{position:fixed;top:16px;right:16px;z-index:20;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.35);color:#fff;backdrop-filter:blur(10px)}
+.loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#101010;color:#fff;text-align:center;transition:.8s ease}
+.loader.hide{opacity:0;pointer-events:none}
+.loader-inner{position:relative;z-index:100000;padding:30px}
+.loader-text{text-transform:uppercase;letter-spacing:.28em;font-size:.76rem;opacity:.82;margin:0 0 12px}
+.loader-delay{font-family:'Cormorant Garamond',serif;text-transform:none;letter-spacing:.08em;font-size:1.85rem;margin-top:14px}
+.loader button{position:relative;z-index:100001;margin-top:24px;border:1px solid #fff;background:transparent;color:#fff;border-radius:999px;padding:15px 22px;text-transform:uppercase;letter-spacing:.16em;pointer-events:auto;cursor:pointer}
+.spark{pointer-events:none}
+.spark::before,.spark::after{content:"";position:absolute;inset:-20%;background-image:radial-gradient(circle,rgba(255,224,150,.95) 0 2px,transparent 3px),radial-gradient(circle,rgba(255,255,255,.75) 0 1px,transparent 2px);background-size:120px 120px,80px 80px;opacity:.35;animation:spark 22s linear infinite}
+.spark::after{transform:rotate(28deg);animation-duration:30s;opacity:.22}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.reveal.visible{opacity:1;transform:none}
+@keyframes spark{from{transform:translate3d(0,0,0)}to{transform:translate3d(-90px,130px,0)}}
+@keyframes bounce{50%{transform:translateY(8px)}}
+@keyframes slowZoom{from{transform:scale(1.03)}to{transform:scale(1.1)}}
+@media(min-width:720px){.tiles{grid-template-columns:1fr 1fr}.glass-card{padding:44px 36px}}
+@media(max-width:380px){h1{font-size:clamp(2.25rem,10.5vw,4rem)}.center,.glass-card{width:94vw}}
