@@ -1,5 +1,5 @@
 const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbyztosGiuGrRD4gzofMInbvVJpYEwqWWOuSapDhewCLmrPpmivNd1k8bj_2hVSwPGmoXA/exec";
-const ADMIN_PIN = "CHANGE_THIS_PIN";
+const ADMIN_PIN = "01October";
 
 async function api(action, data = {}) {
   const response = await fetch(RSVP_API_URL, {
