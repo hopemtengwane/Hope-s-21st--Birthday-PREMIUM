@@ -1,4 +1,4 @@
-const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbyztosGiuGrRD4gzofMInbvVJpYEwqWWOuSapDhewCLmrPpmivNd1k8bj_2hVSwPGmoXA/exec";
+const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbwyeI7esEoeE35scMaA703Z87U0PDTMLSsGSLFmuIhK1D6j-6fHRA4bOJrVA4oKy7VSIQ/exec";
 const eventDate = new Date('2026-12-19T11:30:00+02:00');
 const daysEl = document.getElementById('days');
 
