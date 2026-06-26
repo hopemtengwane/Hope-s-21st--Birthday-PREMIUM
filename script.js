@@ -2,7 +2,7 @@ const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbyztosGiuGrRD4gzof
 const MEMORY_API_URL = "https://script.google.com/macros/s/AKfycbyOBCRYMtViaZ7ZLo3qoju3PBjfHliOEKlwUeIvLEICKjW12t5gFnZ3kdDgN53_XQQ8/exec";
 const CLOUDINARY_CLOUD_NAME = "dy41xrm4i";
 const CLOUDINARY_UPLOAD_PRESET = "hope21_videos";
-const MEMORY_WALL_TEST_MODE = false;
+const MEMORY_WALL_TEST_MODE = true;
 const MEMORY_WALL_OPEN_DATE = new Date("2026-12-19T00:00:00+02:00");
 
 const eventDate = new Date('2026-12-19T11:30:00+02:00');
