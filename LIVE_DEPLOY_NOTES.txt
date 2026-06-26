@@ -1,0 +1,22 @@
+LIVE LOCKED UPDATE
+
+Upload these files into the original live invitation repository:
+- index.html
+- style.css
+- script.js
+- slideshow.html
+- admin.js
+- manage-guests-84JQX2.html
+- assets/
+
+Memory Wall is now locked:
+const MEMORY_WALL_TEST_MODE = false;
+
+It will open automatically on:
+19 December 2026 at 00:00 South Africa time.
+
+Memory Wall QR link:
+https://hopemtengwane.github.io/Hope-s-21st--Birthday-PREMIUM/#memory-wall
+
+Slideshow link:
+https://hopemtengwane.github.io/Hope-s-21st--Birthday-PREMIUM/slideshow.html
