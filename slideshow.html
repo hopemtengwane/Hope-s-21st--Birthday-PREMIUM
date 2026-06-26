@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hope's Memory Wall Slideshow</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#101010;color:#fff;font-family:Arial,sans-serif;overflow:hidden}
+    .top{position:fixed;top:16px;left:16px;right:16px;z-index:5;display:flex;justify-content:space-between;gap:10px;font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;color:#ccc}
+    a{color:#fff}
+    .slide{height:100vh;display:grid;place-items:center;text-align:center;padding:54px 20px 20px;opacity:1;transition:opacity .75s ease,transform .75s ease;transform:scale(1)}
+    .slide.fade-out{opacity:0;transform:scale(1.015)}
+    img,video{max-width:100%;max-height:82vh;object-fit:contain;border:1px solid rgba(255,255,255,.2);box-shadow:0 20px 70px rgba(0,0,0,.55);background:#000}
+    img{animation:kenburns 7s ease-in-out both}
+    .msg{max-width:800px;font-size:clamp(2rem,7vw,5rem);font-family:Georgia,serif;line-height:1.05}
+    .name{margin-top:20px;text-transform:uppercase;letter-spacing:.25em;font-size:.75rem;color:#ccc}
+    .hint{margin-top:12px;color:#aaa;font-size:.8rem;letter-spacing:.08em}
+    .start{position:fixed;inset:0;z-index:20;background:#101010;display:grid;place-items:center;text-align:center;padding:24px}
+    .start.hide{display:none}
+    .start button{border:1px solid #fff;background:transparent;color:#fff;border-radius:999px;padding:15px 22px;text-transform:uppercase;letter-spacing:.16em}
+    @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.035)}}
+  </style>
+</head>
+<body>
+  <div id="startScreen" class="start">
+    <div>
+      <div class="msg">Hope's Memory Wall</div>
+      <div class="name">Live Slideshow</div>
+      <br>
+      <button id="startBtn">Start Slideshow</button>
+    </div>
+  </div>
+
+  <div class="top">
+    <div>Hope's Memory Wall</div>
+    <a href="index.html#memory-wall">Back</a>
+  </div>
+
+  <div id="slide" class="slide">
+    <div>
+      <div class="msg">Loading memories...</div>
+      <div class="name">Please wait</div>
+    </div>
+  </div>
+
+<script>
+const MEMORY_API_URL = "https://script.google.com/macros/s/AKfycbyOBCRYMtViaZ7ZLo3qoju3PBjfHliOEKlwUeIvLEICKjW12t5gFnZ3kdDgN53_XQQ8/exec";
+let memories = [];
+let current = 0;
+let timer = null;
+let userStarted = false;
+
+document.getElementById("startBtn").addEventListener("click", async () => {
+  userStarted = true;
+  document.getElementById("startScreen").classList.add("hide");
+  await loadMemories();
+  showNext();
+});
+
+async function memoryApi(action, data = {}) {
+  const response = await fetch(MEMORY_API_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify({action, ...data})
+  });
+  return await response.json();
+}
+
+async function loadMemories(){
+  try{
+    const result = await memoryApi("listMemories");
+    memories = (result.memories || []).filter(m => m.status !== "HIDDEN");
+    if (!memories.length) {
+      setSlideContent("<div><div class='msg'>No memories uploaded yet.</div><div class='name'>Check back soon</div></div>");
+    }
+  }catch{
+    setSlideContent("<div><div class='msg'>Could not load memories.</div><div class='name'>Please refresh</div></div>");
+  }
+}
+
+function scheduleNext(delay = 7000){
+  clearTimeout(timer);
+  timer = setTimeout(showNext, delay);
+}
+
+function setSlideContent(html){
+  const slide = document.getElementById("slide");
+  slide.classList.add("fade-out");
+
+  setTimeout(() => {
+    slide.innerHTML = html;
+    slide.classList.remove("fade-out");
+  }, 750);
+}
+
+function showNext(){
+  if (!memories.length) return;
+
+  const m = memories[current % memories.length];
+  current++;
+
+  if (m.type === "message") {
+    setSlideContent(`<div><div class="msg">“${escapeHtml(m.message)}”</div><div class="name">${escapeHtml(m.name)}</div></div>`);
+    scheduleNext(7000);
+    return;
+  }
+
+  if (m.type === "video") {
+    const src = m.cloudinaryUrl || m.driveLink;
+    if (!src) {
+      scheduleNext(1000);
+      return;
+    }
+
+    setSlideContent(
+      `<div>
+        <video id="activeVideo" autoplay muted playsinline controls>
+          <source src="${src}" type="video/mp4">
+        </video>
+        <div class="name">${escapeHtml(m.name)}</div>
+        <div class="hint">Videos autoplay muted. Tap the video to hear sound.</div>
+      </div>`
+    );
+
+    setTimeout(() => {
+      const v = document.getElementById("activeVideo");
+
+      if (v) {
+        v.play().catch(() => {});
+        v.onended = () => scheduleNext(1000);
+        v.onerror = () => scheduleNext(5000);
+
+        v.onloadedmetadata = () => {
+          const duration = Math.ceil(v.duration || 15);
+          const displayTime = Math.min(duration, 20);
+          scheduleNext((displayTime + 1) * 1000);
+        };
+
+        scheduleNext(21000);
+      } else {
+        scheduleNext(7000);
+      }
+    }, 850);
+
+    return;
+  }
+
+  const id = m.fileId || extractDriveId(m.driveLink);
+  const imgSrc = id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1600` : "";
+  setSlideContent(`<div><img src="${imgSrc}" alt="Memory"><div class="name">${escapeHtml(m.name)}</div></div>`);
+  scheduleNext(7000);
+}
+
+function extractDriveId(url){
+  const match = String(url || "").match(/[-\w]{25,}/);
+  return match ? match[0] : "";
+}
+
+function escapeHtml(s){
+  return String(s || "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+setInterval(async () => {
+  if (!userStarted) return;
+  await loadMemories();
+}, 30000);
+</script>
+</body>
+</html>
